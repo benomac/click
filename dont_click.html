@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Click</title>
+        <script>
+            let counter = 0;
+            let result = 0;
+            let timeOne = 0;
+            let timeTwo = 0;
+            let topTen = []
+            function quick() {
+                
+                counter++;
+                
+                if (counter === 1) {
+                    timeOne = new Date().getTime();
+                    document.querySelector('button').innerHTML = "Click it again!";
+                } else if (counter === 2) {
+                    timeTwo = new Date().getTime();
+                    document.querySelector('button').innerHTML = "Click me quick as!";
+                    result = (timeTwo - timeOne) / 1000;
+                    counter = 0;
+                    document.querySelector('h1').innerHTML = `Your time was ${result} seconds!`;
+                    scores()
+                    
+                }
+            };
+            
+            function scores() {
+                topTen.push(result)
+                topTen.sort()
+                 
+                if (topTen.length > 9) {
+                    if (Math.max(topTen) > result || Math.min(topTen) > result) {
+                        topTen.push(result)
+                        topTen.sort()
+                    }
+                    topTen = topTen.slice(0, 10)
+                }
+                
+                // Resets the list evey time an attemot is made, stops the list contents repeating.
+                document.querySelector('#results').innerHTML = '';
+                
+                // Creates the list of top ten scores
+                topTen.forEach(element => {
+                    ele = document.createElement('li');
+                    ele.innerHTML = element;
+                    document.querySelector('#results').append(ele);
+                });
+                
+            };
+            
+            function saveScores() {
+                if (!localStorage.getItem('scores')) {
+                    localStorage.setItem('scores', topTen)
+                } else {
+                    localStorage.setItem('scores', topTen)
+                };
+                
+            }
+            
+            //REMEMBER WHEN CALLING A FUNCTION LIKE THIS(*dont) DO IT WITHOUT PARENTHASES!!!!
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelector('button').onclick = quick;
+                document.querySelector('p').onclick = saveScores;
+                
+            });
+            
+
+
+        </script>
+    </head>
+    <body>
+        <button>Click me quick as!</button>
+        <h2>How quick can you click!?</h2>
+        <h1></h1>
+        <h3>Leader Board</h3>
+        <ol id="results"></ol>
+        <p>Click Here</p>
+    </body>
+</html>
